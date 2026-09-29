@@ -2,21 +2,65 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black text-red-600 flex flex-col items-center justify-center p-6">
-      <div className="max-w-md w-full bg-zinc-950 border border-red-900 rounded-2xl p-8 shadow-2xl text-center">
-        <h1 className="text-3xl font-bold mb-2">🔥 ร้านอาหารปีศาจ 🔥</h1>
-        <p className="text-zinc-400 text-sm mb-8">ระบบสั่งอาหารและจัดการครัว Realtime</p>
-        
-        <div className="flex flex-col gap-4">
-          <Link 
-            href="/generate-qr" 
-            className="bg-red-700 hover:bg-red-800 text-black font-semibold py-3 px-4 rounded-xl transition duration-200"
+    <main
+      style={{
+        minHeight: '100vh',
+        background: '#0a0a0a',
+        color: '#ff3b3b',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '420px',
+          width: '100%',
+          background: '#171010',
+          border: '1px solid #3a1010',
+          borderRadius: '16px',
+          padding: '32px',
+          textAlign: 'center',
+          boxShadow: '0 0 30px rgba(255,26,26,0.2)',
+        }}
+      >
+        <h1 style={{ fontSize: '2.2rem', marginBottom: '8px', fontWeight: 800 }}>
+          🔥 ร้านอาหารปีศาจ 🔥
+        </h1>
+        <p style={{ color: '#999', fontSize: '1rem', marginBottom: '32px' }}>
+          ระบบสั่งอาหารและจัดการครัว Realtime
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <Link
+            href="/generate-qr"
+            style={{
+              background: '#c81c1c',
+              color: '#fff',
+              fontWeight: 800,
+              padding: '16px',
+              borderRadius: '12px',
+              textDecoration: 'none',
+              fontSize: '1.1rem',
+              boxShadow: '0 4px 14px rgba(200,28,28,0.4)',
+            }}
           >
             สร้าง QR Code (พนักงาน)
           </Link>
-          <Link 
-            href="/kitchen" 
-            className="bg-zinc-900 hover:bg-zinc-800 text-red-500 border border-red-800 font-semibold py-3 px-4 rounded-xl transition duration-200"
+          <Link
+            href="/kitchen"
+            style={{
+              background: 'transparent',
+              color: '#ff6b6b',
+              border: '2px solid #c81c1c',
+              fontWeight: 800,
+              padding: '16px',
+              borderRadius: '12px',
+              textDecoration: 'none',
+              fontSize: '1.1rem',
+            }}
           >
             จอแสดงผลในครัว (Kitchen)
           </Link>
