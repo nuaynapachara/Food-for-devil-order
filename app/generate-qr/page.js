@@ -11,13 +11,11 @@ export default function GenerateQrPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Session เก่าที่ยังเปิดค้างอยู่ (แสดงกล่องเตือน)
   const [existingSession, setExistingSession] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [closingLoading, setClosingLoading] = useState(false);
 
-  // ผลลัพธ์เมื่อเปิดโต๊ะสำเร็จ
-  const [openedTable, setOpenedTable] = useState(null); // { tableNumber, adultCount, childCount, orderUrl }
+  const [openedTable, setOpenedTable] = useState(null);
   const [copied, setCopied] = useState(false);
 
   function resetForm() {
@@ -37,7 +35,6 @@ export default function GenerateQrPage() {
 
     setLoading(true);
 
-    // 1) เช็คก่อนว่าโต๊ะนี้มี session ที่ยังเปิดอยู่หรือไม่
     const { data: existing, error: checkError } = await supabase
       .from('sessions')
       .select('id, table_number, adult_count, child_count, created_at, status')
@@ -52,13 +49,11 @@ export default function GenerateQrPage() {
     }
 
     if (existing) {
-      // มี session เปิดค้างอยู่ -> แสดงกล่องเตือน ไม่สร้างแถวใหม่
       setLoading(false);
       setExistingSession(existing);
       return;
     }
 
-    // 2) ไม่มี session เปิดค้าง -> insert แถวใหม่
     const { data: created, error: insertError } = await supabase
       .from('sessions')
       .insert({
@@ -99,7 +94,6 @@ export default function GenerateQrPage() {
     setClosingLoading(true);
     setError('');
 
-    // เช็คซ้ำว่า status ยังเป็น 'open' อยู่ตอน update เพื่อกันการกดซ้ำซ้อน
     const { data: updated, error: updateError } = await supabase
       .from('sessions')
       .update({ status: 'closed' })
@@ -115,14 +109,12 @@ export default function GenerateQrPage() {
     }
 
     if (!updated || updated.length === 0) {
-      // ไม่มีแถวถูกอัปเดต แปลว่ามีคนปิดไปแล้วก่อนหน้า
       setError('โต๊ะนี้ถูกปิดไปแล้วโดยผู้อื่น กรุณากด "เปิดโต๊ะ" อีกครั้ง');
       setShowConfirm(false);
       setExistingSession(null);
       return;
     }
 
-    // ปิดสำเร็จ -> กลับไปที่ฟอร์มเดิม (ค่าที่กรอกไว้ยังอยู่ครบ)
     setShowConfirm(false);
     setExistingSession(null);
   }
@@ -178,7 +170,6 @@ export default function GenerateQrPage() {
         ร้านอาหารปีศาจ — สำหรับพนักงานหน้าร้าน
       </p>
 
-      {/* กล่องเตือน: โต๊ะมี session เปิดค้างอยู่ */}
       {existingSession && !showConfirm && (
         <div
           style={{
@@ -211,7 +202,6 @@ export default function GenerateQrPage() {
         </div>
       )}
 
-      {/* กล่องยืนยันปิดโต๊ะเดิม */}
       {existingSession && showConfirm && (
         <div
           style={{
@@ -270,7 +260,6 @@ export default function GenerateQrPage() {
         </div>
       )}
 
-      {/* ฟอร์มเปิดโต๊ะ (ซ่อนเมื่อเปิดโต๊ะสำเร็จแล้ว) */}
       {!openedTable && (
         <form
           onSubmit={handleOpenTable}
@@ -334,7 +323,6 @@ export default function GenerateQrPage() {
         </form>
       )}
 
-      {/* ผลลัพธ์: เปิดโต๊ะสำเร็จ -> แสดง QR */}
       {openedTable && (
         <div
           style={{
@@ -453,3 +441,4 @@ const dangerButtonStyle = {
   cursor: 'pointer',
   flex: 1,
   width: '100%',
+};
